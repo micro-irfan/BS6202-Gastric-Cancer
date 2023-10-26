@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=16:mem=64GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal 
+#PBS -N bbduk
+#PBS -o /home/users/ntu/muhamma4/Masters_Output/bbduk.1.o
+#PBS -e /home/users/ntu/muhamma4/Masters_Output/bbduk.1.e
+
+
+module load anaconda3/2022.10
+source activate /home/users/ntu/muhamma4/.conda/envs/bbmap
+
+outPath=/scratch/users/ntu/muhamma4/BS6202/raw_data
+
+x='_1.fastq.gz'
+y='_2.fastq.gz'
+
+cd ${outPath}
+mkdir -p bbduk_adjusted
+
+cat /home/users/ntu/muhamma4/masters_scripts/sra_list.txt | while read bam
+do
+    bbduk.sh in1=${outPath}/${bam}${x} in2=${outPath}/${bam}${y} outm=ribo.${bam}.fa \
+             out1=${bam}_1.nonribo.fa out2=${bam}_2.nonribo.fa ref=human_ribosomal.fa -Xmx64g
+
+    mv *.nonribo.fa bbduk_adjusted/
+done
+
+cd bbduk_adjusted
+gzip *
+

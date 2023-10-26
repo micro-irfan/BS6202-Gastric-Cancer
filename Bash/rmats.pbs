@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=32:mem=128GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal 
+#PBS -N Rmats
+#PBS -o /home/users/ntu/muhamma4/Masters_Output/rmats.1.o
+#PBS -e /home/users/ntu/muhamma4/Masters_Output/rmats.1.e
+
+referenceDir=/home/users/ntu/muhamma4/scratch/BS6202/reference
+GTF_FILE=${referenceDir}/Homo_sapiens/NCBI/GRCh38/Annotation/Genes.gencode/genes.gtf
+
+outPath='/home/users/ntu/muhamma4/scratch/BS6202/STAR_result'
+GENOME=${referenceDir}/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa
+
+module load anaconda3/2021.11
+source activate /home/users/ntu/muhamma4/.conda/envs/rna-seq
+
+# https://gist.github.com/ipurusho/26d0fe830a61b2a7c0c9caafcec56d92
+
+cd ${outPath}
+mkdir -p rmats_results_1
+
+RNASeq-MATS.py --b1 /home/users/ntu/muhamma4/masters_scripts/bam1.txt \
+               --b2 /home/users/ntu/muhamma4/masters_scripts/bam2.txt \
+               --gtf ${GTF_FILE} \
+               --od ${outPath}/rmats_results_1 \
+               -t paired --nthread 32

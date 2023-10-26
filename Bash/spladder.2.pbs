@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=32:mem=128GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal 
+#PBS -N Spladder
+#PBS -o /home/users/ntu/muhamma4/Masters_Output/Spladder.2.o
+#PBS -e /home/users/ntu/muhamma4/Masters_Output/Spladder.2.e
+
+referenceDir=/home/users/ntu/muhamma4/scratch/BS6202/reference
+GTF_FILE=${referenceDir}/Homo_sapiens/NCBI/GRCh38/Annotation/Genes.gencode/genes.gtf
+
+outPath='/home/users/ntu/muhamma4/scratch/BS6202/STAR_result'
+GENOME=${referenceDir}/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa
+
+module load anaconda3/2022.10
+source activate /home/users/ntu/muhamma4/.conda/envs/spladder
+
+cd ${outPath}
+
+mkdir -p Spladder_results_2
+
+outdir=${outPath}/Spladder_results_2
+
+spladder build --parallel 32 --bams Spladder_bam.txt \
+               --annotation ${GTF_FILE} --merge-strat merge_graphs \
+               --quantify-graph --qmode all --ignore-mismatches \
+               --outdir ${outdir} --reference ${GENOME} --confidence 2 
+
+## Differential Analysis Using SplAdder Test
+spladder test --parallel 32 \
+              --conditionA Spladder_bam.vector.txt \
+              --conditionB Spladder_bam.hoxd9.txt \
+              --labelA vector --labelB hoxd9 \
+              --outdir ${outdir} \
+              --diagnose-plots --plot-format pdf --confidence 2 
+ 

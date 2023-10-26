@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=4:mem=12GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal 
+#PBS -N rseqc2
+#PBS -o /home/users/ntu/muhamma4/Masters_Output/rseqc2.o
+#PBS -e /home/users/ntu/muhamma4/Masters_Output/rseqc2.e
+
+module load samtools
+module load python/3.7.13
+source /home/users/ntu/muhamma4/rseqc/bin/activate
+
+referenceDir=/home/users/ntu/muhamma4/scratch/BS6202/reference
+BED_FILE=${referenceDir}/Homo_sapiens/NCBI/GRCh38/Annotation/Genes.gencode/genes.bed
+
+outPath='/home/users/ntu/muhamma4/scratch/BS6202/STAR_result'
+outdir=${outPath}/rseqc_result_1
+
+mkdir -p ${outdir}
+
+bamList=${outPath}/Spladder_bam.txt
+
+cat /home/users/ntu/muhamma4/masters_scripts/sra_list.txt | while read bam
+do
+    read_distribution.py  -i ${outPath}/${bam}/${bam}Aligned.sortedByCoord.out.bam -r ${BED_FILE} > ${outdir}/${bam}.readdistribution.txt
+done

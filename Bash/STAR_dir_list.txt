@@ -1,0 +1,6 @@
+/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/SRR20698984/SRR20698984Log.final.out
+/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/SRR20698985/SRR20698985Log.final.out
+/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/SRR20698986/SRR20698986Log.final.out
+/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/SRR20698987/SRR20698987Log.final.out
+/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/SRR20698988/SRR20698988Log.final.out
+/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/SRR20698989/SRR20698989Log.final.out

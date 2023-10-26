@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=4:mem=16GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal
+#PBS -N BS6202_fastqc
+#PBS -o /home/users/ntu/muhamma4/output/BS6202_fastqc.2.o
+#PBS -e /home/users/ntu/muhamma4/output/BS6202_fastqc.2.e
+
+module load anaconda3/2022.10
+source activate /home/users/ntu/muhamma4/.conda/envs/BS6214-2
+
+outPath=/home/users/ntu/muhamma4/scratch/BS6202/raw_data
+
+x='_1.fastq.gz'
+y='_2.fastq.gz'
+
+cat /home/users/ntu/muhamma4/masters_scripts/sra_list.txt | while read p
+do
+        echo $(date +"%Y-%m-%d %H:%M:%S") " - FASTQC PROCESSING ${p}"
+
+        cd $outPath
+        mkdir -p ${p}_fastqc
+        fastqc -t 4 -o ${p}_fastqc  $outPath/${p}${x} $outPath/${p}${y} 
+        
+        echo $(date +"%Y-%m-%d %H:%M:%S") " - FASTQC COMPLETED ${p}"
+
+done

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=4:mem=12GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal 
+#PBS -N multiqc.rseqc
+#PBS -o /home/users/ntu/muhamma4/Masters_Output/multiqc.rseqc.o
+#PBS -e /home/users/ntu/muhamma4/Masters_Output/multiqc.rseqc.e
+
+module load anaconda3/2022.10
+source activate /home/users/ntu/muhamma4/.conda/envs/multiqc
+
+cd '/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/rseqc_result_1/'
+
+multiqc -o ./ -n "rseqc" . 

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=16:mem=40GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal
+#PBS -N BS6202_featureCount
+#PBS -o /home/users/ntu/muhamma4/output/BS6202_featureCount.4.o
+#PBS -e /home/users/ntu/muhamma4/output/BS6202_featureCount.4.e
+
+featureCountsPath='/home/users/ntu/muhamma4/packages/subread-2.0.3-Linux-x86_64/bin/featureCounts'
+
+referenceDir=/home/users/ntu/muhamma4/scratch/BS6202/reference
+rawPath='/home/users/ntu/muhamma4/scratch/BS6202/raw_data/'
+outPath='/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/'
+
+GENOME_DIR=${referenceDir}/Homo_sapiens/NCBI/GRCh38/STAR/
+GTF_FILE=${referenceDir}/Homo_sapiens/NCBI/GRCh38/Annotation/Genes.gencode/genes.gtf
+
+MAPQ=10
+EXPT=BS6202.4
+
+cd ${outPath}/bamFiles
+${featureCountsPath} -Q ${MAPQ} -T 16 -a ${GTF_FILE} -o ${EXPT}.count -p --countReadPairs -t CDS -s 2 -g gene_id *.bam 
+cat ${EXPT}.count | cut -f1,7- | sed 1d > ${EXPT}.count.mx

@@ -1,0 +1,1 @@
+/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/SRR20698987/SRR20698987Aligned.sortedByCoord.out.bam,/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/SRR20698988/SRR20698988Aligned.sortedByCoord.out.bam,/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/SRR20698989/SRR20698989Aligned.sortedByCoord.out.bam

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=32:mem=128GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal 
+#PBS -N Spladder
+#PBS -o /home/users/ntu/muhamma4/Masters_Output/BS6202-Spladder-test.2.o
+#PBS -e /home/users/ntu/muhamma4/Masters_Output/BS6202-Spladder-test.2.e
+
+referenceDir=/home/users/ntu/muhamma4/scratch/BS6202/reference
+GTF_FILE=${referenceDir}/Homo_sapiens/NCBI/GRCh38/Annotation/Genes.gencode/genes.gtf
+
+outPath='/home/users/ntu/muhamma4/scratch/BS6202/STAR_result'
+
+module load anaconda3/2022.10
+source activate /home/users/ntu/muhamma4/.conda/envs/spladder
+
+cd ${outPath}
+spladder test --parallel 32 \
+              --conditionA Spladder_bam.vector.txt \
+              --conditionB Spladder_bam.hoxd9.txt \
+              --labelA vector --labelB hoxd9 \
+              --outdir Spladder_train \
+              --diagnose-plots --plot-format pdf --event-types exon_skip

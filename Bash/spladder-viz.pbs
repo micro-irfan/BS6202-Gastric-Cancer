@@ -1,0 +1,62 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=16:mem=64GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal 
+#PBS -N Spladder-Viz
+#PBS -o /home/users/ntu/muhamma4/Masters_Output/Spladder-Viz.3.o
+#PBS -e /home/users/ntu/muhamma4/Masters_Output/Spladder-Viz.3.e
+
+module load anaconda3/2022.10
+source activate /home/users/ntu/muhamma4/.conda/envs/spladder
+
+outPath=/home/users/ntu/muhamma4/scratch/BS6202/STAR_result
+
+# cat /home/users/ntu/muhamma4/masters_scripts/print_splice_list.txt | while read event
+# do
+#     spladder viz --outdir ${outPath}/Spladder_results_2/ \
+#              --track event ${event} \
+#              --track coverage control:${outPath}/Spladder_bam.vector.txt KO:${outPath}/Spladder_bam.hoxd9.txt \
+#              --format png --confidence 2 --outbase ${event}
+
+# done
+
+spladder viz --outdir ${outPath}/Spladder_results_2/ \
+             --track splicegraph ENSG00000186594.12 \
+             --track transcript ENSG00000186594.12 \
+             --track coverage control:${outPath}/Spladder_bam.vector.txt KO:${outPath}/Spladder_bam.hoxd9.txt \
+             --format png --confidence 2 --outbase MIR22HG.gene
+
+# spladder viz --outdir ${outPath}/Spladder_results_2/ \
+#              --track splicegraph ENSG00000132424.14 \
+#              --track event intron_retention.23784 \
+#              --track transcript ENSG00000132424.14 \
+#              --track coverage,segments control:${outPath}/Spladder_bam.vector.txt KO:${outPath}/Spladder_bam.hoxd9.txt \
+#              --format png --confidence 2 --outbase ENSG00000132424.14
+
+# spladder viz --outdir ${outPath}/Spladder_results_2/ \
+#              --track splicegraph ENSG00000231196.3 \
+#              --track coverage control:${outPath}/Spladder_bam.vector.txt KO:${outPath}/Spladder_bam.hoxd9.txt \
+#              --format png --confidence 2 --outbase ENSG00000231196.3
+
+# #NPIPB4
+# spladder viz --outdir ${outPath}/Spladder_results_2/ \
+#              --track splicegraph ENSG00000185864.16 \
+#              --track event intron_retention.10507 \
+#              --track coverage control:${outPath}/Spladder_bam.vector.txt KO:${outPath}/Spladder_bam.hoxd9.txt \
+#              --format png --confidence 2 --outbase intron_retention.10507
+
+# #RAB26
+# spladder viz --outdir ${outPath}/Spladder_results_2/ \
+#              --track splicegraph ENSG00000167964.12 \
+#              --track event intron_retention.9279 \
+#              --track coverage control:${outPath}/Spladder_bam.vector.txt KO:${outPath}/Spladder_bam.hoxd9.txt \
+#              --format png --confidence 2 --outbase intron_retention.9279
+
+# #LTBP4
+# spladder viz --outdir ${outPath}/Spladder_results_2/ \
+#              --track splicegraph ENSG00000090006.17 \
+#              --track event intron_retention.14613 \
+#              --track coverage control:${outPath}/Spladder_bam.vector.txt KO:${outPath}/Spladder_bam.hoxd9.txt \
+#              --format png --confidence 2 --outbase intron_retention.14613

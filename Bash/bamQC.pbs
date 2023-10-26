@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#PBS -q normal
+#PBS -l select=1:ncpus=16:mem=64GB
+#PBS -l walltime=24:00:00
+#PBS -P Personal
+#PBS -N BS6202_qualimap
+#PBS -o /home/users/ntu/muhamma4/Masters_Output/BS6202_qualimap.3.o
+#PBS -e /home/users/ntu/muhamma4/Masters_Output/BS6202_qualimap.3.e
+
+referenceDir=/home/users/ntu/muhamma4/scratch/BS6202/reference
+rawPath='/home/users/ntu/muhamma4/scratch/BS6202/raw_data/'
+outPath='/home/users/ntu/muhamma4/scratch/BS6202/STAR_result/'
+
+GENOME_DIR=${referenceDir}/Homo_sapiens/NCBI/GRCh38/STAR/
+GTF_FILE=${referenceDir}/Homo_sapiens/NCBI/GRCh38/Annotation/Genes.gencode/genes.gtf
+
+module load anaconda3/2022.10
+source activate BS6214-2
+
+cd $outPath
+mkdir -p qualimapBAMQC-1
+
+cat /home/users/ntu/muhamma4/masters_scripts/sra_list.txt | while read p
+do  
+    cd $outPath/bamFiles
+    qualimap bamqc -bam ${p}Aligned.sortedByCoord.out.bam -nw 400 -hm 3 -sd -outdir ${outPath}/qualimapBAMQC-1/${p} --java-mem-size=64G
+done
+
+
+mkdir -p qualimapRNASEQ-1
+cat /home/users/ntu/muhamma4/masters_scripts/sra_list.txt | while read p
+do  
+    cd $outPath/bamFiles
+    qualimap rnaseq -bam ${p}Aligned.sortedByCoord.out.bam -gtf ${GTF_FILE} -pe -s  -outdir ${outPath}/qualimapRNASEQ-1/${p} --java-mem-size=64G
+done
